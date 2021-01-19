@@ -10,8 +10,6 @@ This repository is released under GPL-v3 License.
 
 ### wigb
 
-wigb is a tool for seismic data visualization. wigb can visualize a multi-trace data trace by trace.
-
-The following picture is the result of wigb_tester.py.
+wigb is a tool for seismic data visualization. wigb can show a multi-trace data trace by trace.
 
 Demonstrations are shown in [Visualization](./visualization/README.md)
