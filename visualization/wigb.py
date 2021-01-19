@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 def wigb(a=None, scale=1, x=None, z=None, a_max=None, figsize=(30, 15), no_plot=False):
     """
     wigb - plot seismic trace data
-    Thanks to XINGONG LI's contribution (https://geog.ku.edu/xingong-li)
+    Thanks to XINGONG LI's contribution on MATLAB (https://geog.ku.edu/xingong-li)
 
     :param a: Seismic data (trace data * traces)
     :param scale: Scale factor (Default 1)
@@ -17,7 +17,7 @@ def wigb(a=None, scale=1, x=None, z=None, a_max=None, figsize=(30, 15), no_plot=
     :param a_max: Magnitude of input data (Default None)
     :param figsize: Size of figure (Default (30, 15))
     :param no_plot: Do not plot immediately (Default False)
-    :return: if no_plot == False, plot the seismic data, otherwise, do not plot immediately,
+    :return: if no_plot is False, plot the seismic data, otherwise, do not plot immediately,
             users can adjust plot parameters outside
     """
     n_data, n_trace = a.shape
