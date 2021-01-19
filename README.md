@@ -14,5 +14,4 @@ wigb is a tool for seismic data visualization. wigb can visualize a multi-trace 
 
 The following picture is the result of wigb_tester.py.
 
-![wigb_tester](wigb_tester.png)
-![wigb_tester](wigb_tester_hor.png)
+Demonstrations are shown in [Visualization](./visualization/README.md)
