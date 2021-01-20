@@ -2,10 +2,13 @@
 # Released Under GPL-v3.0 License
 
 # Version 0.1 is released on Jan/27/2020
-# Implement wigb
+# Implementation of wigb
 
 # Version 0.2 is released on Jan/19/2020
 # Add parameter direction - decide the plot direction
+
+# Version 0.3 is released on Jan/20/2021
+# Replace `plot' by `fill_between' function to boost the filling procession
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -41,26 +44,29 @@ def wigb(a=None, scale=1, x=None, z=None, a_max=None, figsize=(30, 15), no_plot=
     x = np.array(x)
     z = np.array(z)
 
-    dx = np.mean(x[1:]-x[:n_trace-1])
-    dz = np.mean(z[1:]-z[:n_data-1])
+    dx = np.mean(x[1:] - x[:n_trace - 1])
+    dz = np.mean(z[1:] - z[:n_data - 1])
 
-    a *= scale*dx/a_max
+    a *= scale * dx / a_max
 
     plt.figure(figsize=figsize)
 
     if direction == 'Vertical':
-        plt.xlim([-2*dx, x[-1] + 2*dx])
+        plt.xlim([-2 * dx, x[-1] + 2 * dx])
         plt.ylim([-dz, z[-1] + dz])
         plt.gca().invert_yaxis()
 
         for index_x in range(n_trace):
             trace = a[:, index_x]
-            plt.plot(index_x*dx + trace, z, 'k-', linewidth=2)
+            plt.plot(index_x * dx + trace, z, 'k-', linewidth=2)
 
-            for (index_z, trace_val) in zip(range(n_data), trace):
-                if trace_val <= 0:
-                    continue
-                plt.plot([index_x*dx, index_x*dx+trace_val], [index_z*dz, index_z*dz], 'k-', linewidth=2)
+            plt.fill_betweenx(
+                np.array([y * dz for y in range(n_data)]),
+                np.zeros_like(np.arange(n_data)) + index_x * dx,
+                trace + index_x * dx,
+                where=trace > 0,
+                color='k'
+            )
 
     elif direction == 'Horizontal':
         plt.xlim([-dz, z[-1] + dz])
@@ -69,12 +75,15 @@ def wigb(a=None, scale=1, x=None, z=None, a_max=None, figsize=(30, 15), no_plot=
 
         for index_z in range(n_trace):
             trace = a[:, index_z]
-            plt.plot(z, index_z*dx+trace, 'k-', linewidth=2)
+            plt.plot(z, index_z * dx + trace, 'k-', linewidth=2)
 
-            for (index_x, trace_val) in zip(range(n_data), trace):
-                if trace_val <= 0:
-                    continue
-                plt.plot([index_x*dz, index_x*dz], [index_z*dx, index_z*dx+trace_val], 'k-', linewidth=2)
+            plt.fill_between(
+                np.array([y * dz for y in range(n_data)]),
+                np.zeros_like(np.arange(n_data)) + index_z * dx,
+                trace + index_z * dx,
+                where=trace > 0,
+                color='k'
+            )
 
     if not no_plot:
         plt.show()
