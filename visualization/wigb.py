@@ -26,9 +26,10 @@ def wigb(a=None, scale=1, x=None, z=None, a_max=None, figsize=(30, 15), no_plot=
     :param a_max: Magnitude of input data (Default None)
     :param figsize: Size of figure (Default (30, 15))
     :param no_plot: Do not plot immediately (Default False)
+    :param direction: Display direction (Default 'Vertical'). Either 'Vertical' or 'Horizontal'
+
     :return: if no_plot is False, plot the seismic data, otherwise, do not plot immediately,
             users can adjust plot parameters outside
-    :param direction: Display direction (Default 'Vertical'). Either 'Vertical' or 'Horizontal'
     """
     n_data, n_trace = a.shape
 
