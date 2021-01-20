@@ -1,7 +1,7 @@
 # Created by UPO-JZSB on Jan/17/2020
 # Released Under GPL-v3.0 License
 
-# Version 0.1 is released on Jan/27/2020
+# Version 0.1 is released on Jan/17/2020
 # Implementation of wigb
 
 # Version 0.2 is released on Jan/19/2020
