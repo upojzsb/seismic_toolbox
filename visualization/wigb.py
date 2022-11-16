@@ -14,12 +14,16 @@
 # Fixed a problem which may cause inconsistent display
 # Fixed a problem which may change original data
 
+# Version 0.5 is released on Nov/16/2022
+# Add aspect parameter to adjust data aspect
+# One year passed~
+
 import numpy as np
 import copy
 import matplotlib.pyplot as plt
 
 
-def wigb(a=None, scale=1, x=None, z=None, a_max=None, figsize=(30, 15), no_plot=False, direction='Vertical'):
+def wigb(a=None, scale=1, x=None, z=None, a_max=None, figsize=(30, 15), aspect='auto', no_plot=False, direction='Vertical'):
     """
     wigb - plot seismic trace data
     Thanks to XINGONG LI's contribution on MATLAB (https://geog.ku.edu/xingong-li)
@@ -29,6 +33,7 @@ def wigb(a=None, scale=1, x=None, z=None, a_max=None, figsize=(30, 15), no_plot=
     :param x: x-axis info (traces) (Default None)
     :param z: z-axis info (trace data) (Default None)
     :param a_max: Magnitude of input data (Default None)
+    :param aspect: Display aspect (Default 'auto'). Can be 'auto', 'equal', or a positive real number
     :param figsize: Size of figure (Default (30, 15))
     :param no_plot: Do not plot immediately (Default False)
     :param direction: Display direction (Default 'Vertical'). Either 'Vertical' or 'Horizontal'
@@ -46,7 +51,7 @@ def wigb(a=None, scale=1, x=None, z=None, a_max=None, figsize=(30, 15), no_plot=
     if a_max is None:
         a_max = np.max(np.max(a, axis=0))
     if direction not in ['Horizontal', 'Vertical']:
-        raise ValueError('Direction must be \'Horizontal\' or \'Vertical\'')
+        raise ValueError('Direction must be either \'Horizontal\' or \'Vertical\'')
 
     x = np.array(x)
     z = np.array(z)
@@ -56,7 +61,8 @@ def wigb(a=None, scale=1, x=None, z=None, a_max=None, figsize=(30, 15), no_plot=
 
     a *= scale * dx / a_max
 
-    plt.figure(figsize=figsize)
+    fig, ax = plt.subplots(figsize=figsize)
+    ax.set_aspect(aspect=aspect)
 
     if direction == 'Vertical':
         plt.xlim([-2 * dx, x[-1] + 2 * dx])
