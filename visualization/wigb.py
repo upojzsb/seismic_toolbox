@@ -18,12 +18,15 @@
 # Add aspect parameter to adjust data aspect
 # One year passed~
 
+# Version 0.6 is released on Feb/28/2024
+# Support drawing wiggles on the subplot via incoming parameter ax
+
 import numpy as np
 import copy
 import matplotlib.pyplot as plt
 
 
-def wigb(a=None, scale=1, x=None, z=None, a_max=None, figsize=(30, 15), aspect='auto', no_plot=False, direction='Vertical'):
+def wigb(a=None, scale=1, x=None, z=None, a_max=None, ax=None, figsize=(30, 15), aspect='auto', no_plot=False, direction='Vertical'):
     """
     wigb - plot seismic trace data
     Thanks to XINGONG LI's contribution on MATLAB (https://geog.ku.edu/xingong-li)
@@ -34,9 +37,10 @@ def wigb(a=None, scale=1, x=None, z=None, a_max=None, figsize=(30, 15), aspect='
     :param z: z-axis info (trace data) (Default None)
     :param a_max: Magnitude of input data (Default None)
     :param aspect: Display aspect (Default 'auto'). Can be 'auto', 'equal', or a positive real number
-    :param figsize: Size of figure (Default (30, 15))
+    :param ax: The axes handler (Default None). The default value indicate the axes is generated within this function
+    :param figsize: Size of figure (Default (30, 15)). This parameter works only if ax is None.
     :param no_plot: Do not plot immediately (Default False)
-    :param direction: Display direction (Default 'Vertical'). Either 'Vertical' or 'Horizontal'
+    :param direction: Display direction (Default 'Vertical'). Either 'Vertical' or 'Horizontal'.
 
     :return: if no_plot is False, plot the seismic data, otherwise, do not plot immediately,
             users can adjust plot parameters outside
@@ -61,19 +65,20 @@ def wigb(a=None, scale=1, x=None, z=None, a_max=None, figsize=(30, 15), aspect='
 
     a *= scale * dx / a_max
 
-    fig, ax = plt.subplots(figsize=figsize)
+    if ax is None:
+        fig, ax = plt.subplots(figsize=figsize)
     ax.set_aspect(aspect=aspect)
 
     if direction == 'Vertical':
-        plt.xlim([-2 * dx, x[-1] + 2 * dx])
-        plt.ylim([-dz, z[-1] + dz])
+        ax.set_xlim(-2 * dx, x[-1] + 2 * dx)
+        ax.set_ylim(-dz, z[-1] + dz)
         plt.gca().invert_yaxis()
 
         for index_x in range(n_trace):
             zero_offset = index_x*dx
             trace = a[:, index_x]
-            plt.plot(zero_offset + trace, z, 'k-', linewidth=2)
-            plt.fill_betweenx(
+            ax.plot(zero_offset + trace, z, 'k-', linewidth=2)
+            ax.fill_betweenx(
                 np.array([y * dz for y in range(n_data)]),
                 np.zeros_like(np.arange(n_data)) + zero_offset,
                 trace + zero_offset,
@@ -84,16 +89,16 @@ def wigb(a=None, scale=1, x=None, z=None, a_max=None, figsize=(30, 15), aspect='
             )
 
     elif direction == 'Horizontal':
-        plt.xlim([-dz, z[-1] + dz])
-        plt.ylim([-2 * dx, x[-1] + 2 * dx])
-        plt.gca().invert_yaxis()
+        ax.set_xlim(-dz, z[-1] + dz)
+        ax.set_ylim(-2 * dx, x[-1] + 2 * dx)
+        ax.invert_yaxis()
 
         for index_z in range(n_trace):
             zero_offset = index_z*dx
             trace = a[:, index_z]
-            plt.plot(z, zero_offset + trace, 'k-', linewidth=2)
+            ax.plot(z, zero_offset + trace, 'k-', linewidth=2)
 
-            plt.fill_between(
+            ax.fill_between(
                 np.array([y * dz for y in range(n_data)]),
                 np.zeros_like(np.arange(n_data)) + zero_offset,
                 trace + zero_offset,
