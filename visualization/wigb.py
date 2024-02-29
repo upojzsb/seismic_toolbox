@@ -72,7 +72,7 @@ def wigb(a=None, scale=1, x=None, z=None, a_max=None, ax=None, figsize=(30, 15),
     if direction == 'Vertical':
         ax.set_xlim(-2 * dx, x[-1] + 2 * dx)
         ax.set_ylim(-dz, z[-1] + dz)
-        plt.gca().invert_yaxis()
+        ax.invert_yaxis()
 
         for index_x in range(n_trace):
             zero_offset = index_x*dx
